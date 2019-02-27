@@ -1,0 +1,2 @@
+from astropy.io import fits
+fitz = fits.util.get_testdata_filepath('96_04_17a_20secn
