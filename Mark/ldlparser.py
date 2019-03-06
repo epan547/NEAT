@@ -3,12 +3,15 @@ from astropy.utils.data import download_file
 def lbl_parse(file, link=False):
 	
 	""" 
+
 		Parses a .lbl file and returns it as a dictionary
 		
 		file: link or local file path
 		link: True if file is a link, false if local file path
 
 		returns: dictionary form of .lbl file
+
+		text 857-998-8328 if you have bugs
 	"""
 
 	# Dictionary that turn each variable into the .lbl into a key-value pair
