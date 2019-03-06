@@ -1,12 +1,12 @@
 from astropy.utils.data import download_file
 
-def ldl_parse(file, link=False):
+def lbl_parse(file, link=False):
 	
 	""" 
-		Parses a .ldl file and returns it as a dictionary
+		Parses a .lbl file and returns it as a dictionary
 		
 		file: link or local file path
-		link: True is file is a link, false if local file path
+		link: True if file is a link, false if local file path
 
 		returns: dictionary form of .lbl file
 	"""
@@ -18,17 +18,15 @@ def ldl_parse(file, link=False):
 	# before being put into the dictionary
 	l = []
 
-	# Download ldl and read content as a file if link
+	# Download lbl and read content as a file if link
 	# or use the path if local
 	if link:
-		ldl = download_file(file, cache=True)
-		content = open(ldl,'r')
+		lbl = download_file(file, cache=True)
+		content = open(lbl,'r')
 
 	else:
 		content = open(file,'r')
 	
-
-
 	
 	# Populate list of key-value pairs, incomplete lines, and eliminate blank lines 
 	for line in content:
@@ -48,7 +46,6 @@ def ldl_parse(file, link=False):
 	
 	i = 0
 	while(True):
-		print(len(l[i]))
 		if len(l[i]) == 1:
 			# If length of list elem. is 1, check if it's the end
 			if l[i][0] == 'END':
@@ -67,9 +64,9 @@ def ldl_parse(file, link=False):
 
 if __name__ == "__main__":
 	# .lbl from link test
-	res1 = ldl_parse('https://sbnarchive.psi.edu/pds3/neat/tricam/data/p20020306/obsdata/20020306022952d.lbl',1)
+	res1 = lbl_parse('https://sbnarchive.psi.edu/pds3/neat/tricam/data/p20020306/obsdata/20020306022952d.lbl',1)
 	# .lbl from local file test
-	#res2 = ldl_parse('/home/mark/neat/20020306022952d.lbl')
+	#res2 = lbl_parse('/home/mark/neat/20020306022952d.lbl')
 	
 	print(res1.items(),'\n')
 	#print(res2.items(),'\n')
