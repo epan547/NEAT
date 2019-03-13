@@ -1,0 +1,61 @@
+PDS_VERSION_ID                     = PDS3
+
+RECORD_TYPE                        = "FIXED_LENGTH"
+RECORD_BYTES                       = 2880
+FILE_RECORDS                       = 23125
+
+^HEADER                            = "96_04_17dark_20sec.fit"
+^IMAGE                             = ("96_04_17dark_20sec.fit", 6)
+
+DATA_SET_ID                        = "EAR-A-I1063-3-NEAT-V1.0"
+PRODUCT_NAME                       = "NEAT GEODSS DARK IMAGE"
+PRODUCT_ID                         =
+        "G19960417_DARKS_96_04_17DARK_20SEC"
+INSTRUMENT_HOST_ID                 = "OBS6491T1"
+INSTRUMENT_HOST_NAME               = "AMOS GROUND-BASED ELECTRO-OPTICAL DEEP
+        SPACE SURVEILLANCE (GEODSS) 1.0M"
+INSTRUMENT_ID                      = "I1349"
+INSTRUMENT_NAME                    = "NEAT-MAUI CAMERA"
+TARGET_NAME                        = "DARK"
+TARGET_TYPE                        = "CALIBRATION"
+START_TIME                         = 1996-04-17T07:01:19
+STOP_TIME                          = 1996-04-17T07:01:39
+PRODUCT_CREATION_TIME              = 2014-07-31T18:21:52
+REFERENCE_KEY_ID                   = {"BALTAY&RABINOWIT2007", "LANDOLT1992",
+        "PRAVDOETAL1999"}
+FILTER_NAME                        = "NONE"
+CENTER_FILTER_WAVELENGTH           = 702 <NANOMETER>
+RIGHT_ASCENSION                    = 0.0 <DEGREE>
+DECLINATION                        = 0.0 <DEGREE>
+COORDINATE_SYSTEM_ID               = "J2000"
+AIRMASS                            = 1.086638
+EXPOSURE_DURATION                  = 20.0 <SECOND>
+
+OBJECT                             = HEADER
+ BYTES                             = 14400
+ HEADER_TYPE                       = "FITS"
+ INTERCHANGE_FORMAT                = "BINARY"
+ RECORDS                           = 5
+ DESCRIPTION                       = "FITS Standard NOST 100-2.0"
+END_OBJECT                         = HEADER
+                                                                              
+
+OBJECT                             = IMAGE
+  LINES                            = 4080
+  LINE_SAMPLES                     = 4080
+  SAMPLE_BITS                      = 32
+  SAMPLE_TYPE                      = "IEEE_REAL"
+  OFFSET                           = 32768.0
+  SCALING_FACTOR                   = 1.0
+  DERIVED_MINIMUM                  = 65521.619141
+  DERIVED_MAXIMUM                  = 123288.242188
+  AXIS_ORDER_TYPE                  = "FIRST_INDEX_FASTEST"
+  LINE_DISPLAY_DIRECTION           = "UP"
+  SAMPLE_DISPLAY_DIRECTION         = "RIGHT"
+  UNIT                             = "COUNTS"
+  HORIZONTAL_PIXEL_FOV             = 1.43 <ARCSECOND>
+  VERTICAL_PIXEL_FOV               = 1.43 <ARCSECOND>
+  DESCRIPTION                      = "NEAT-GEODSS dark image"
+END_OBJECT                         = IMAGE
+
+END
