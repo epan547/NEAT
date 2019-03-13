@@ -8,9 +8,6 @@ from astropy.io import fits
 Process Data from: https://sbnarchive.psi.edu/pds3/neat/geodss/data/g19960417/obsdata/
 Produce new folder with corrected images
 """
-np.seterr(divide='ignore', invalid='ignore')
-# from astropy.utils.data import download_file
-
 
 def process_image(image, dark, flat):
     """
@@ -26,7 +23,12 @@ def process_image(image, dark, flat):
 
     return np.array(corrected_image)
 
+
 def get_image_names(image_folder):
+    """
+    Make array with all fits file names in given directory
+    returns: array of filenames
+    """
     names = []
     for filename in os.listdir(image_folder):
         filepath = image_folder + "/" + filename
@@ -34,18 +36,26 @@ def get_image_names(image_folder):
             names.append(filename)
         if filename.endswith(".lbl"):
             image_lbl = lblparser.lbl_parse((filepath))
+            # check fields to make sure they're correct
             if image_lbl["TARGET_NAME"] != "\"ASTEROID\"" or image_lbl["FILTER_NAME"] != "\"NONE\"":
+                # remove fits file if not correct
                 names.remove(filename.rstrip(".lbl")+".fit.fz")
                 print(image_lbl["TARGET_NAME"])
                 print(image_lbl["FILTER_NAME"])
                 print("TARGET_NAME not ASTEROID || FILTER_NAME not NONE")
-        # TODO: check TARGET_NAME = ASTEROID and FILTER_NAME="NONE"
     return names
 
 def get_image(images_folder, filename):
+    """
+    Gets image fits data
+    images_folder: directory where image files located
+
+    returns: matrix of data from fits file
+    """
     filepath = images_folder + "/" + filename
     image_data = fits.getdata(filepath)
     return np.array(image_data)
+
 
 def get_dark(darks_folder):
     """
@@ -92,17 +102,22 @@ def make_fits(image_data, filename):
      hdu.writeto(filename)
 
 if __name__ == "__main__":
-    dark = get_dark("darks")
+
+    # directory names: "darks" "flats" "obsdata"
+    dark = get_dark("darks") # fits data
     flat = get_flat("flats")
     image_names = get_image_names("obsdata")
 
+    # make directory where corrected images will go
     if not os.path.exists("corrected_obsdata"):
         os.mkdir("corrected_obsdata")
 
+    # go through all the images in obsdata directory, process
+    # them and make new files in new directory
     for image in image_names:
         image_data = get_image("obsdata", image)
         new_filename = "corrected_obsdata/corr_" + image
         processed_image = process_image(image_data, dark, flat)
         make_fits(processed_image, new_filename)
 
-    print(process_image(image_data, dark, flat))
+    # print(process_image(image_data, dark, flat))
