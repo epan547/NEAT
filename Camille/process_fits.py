@@ -1,13 +1,20 @@
+"""
+Made as part of research with Carrie Nugent
+at Olin College of Engineering
+
+Camille Xue 2019
+Process Data from:
+https://sbnarchive.psi.edu/pds3/neat/geodss/data/g19960417/obsdata/
+
+Produce new folder with corrected fits images
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 import os
 import lblparser
 from astropy.io import fits
 
-"""
-Process Data from: https://sbnarchive.psi.edu/pds3/neat/geodss/data/g19960417/obsdata/
-Produce new folder with corrected images
-"""
 
 def process_image(image, dark, flat):
     """
@@ -98,8 +105,28 @@ def get_flat(flats_folder):
     return "Flat not found"
 
 def make_fits(image_data, filename):
-     hdu = fits.PrimaryHDU(image_data)
-     hdu.writeto(filename)
+    hdu = fits.PrimaryHDU(image_data)
+    if(os.path.isfile(filename)):
+        print("Corrected file: \"{}\" already exists. \nOverwrite? [y/n]".format(filename))
+        if(user_confirm()):
+            os.remove(filename)
+            hdu.writeto(filename)
+        else:
+            print("Corrected file not overwritten.")
+    else:
+        hdu.writeto(filename)
+
+
+def user_confirm():
+    yes = {'yes','y', 'ye', ''}
+    no = {'no','n'}
+    choice = input().lower()
+    if choice in yes:
+       return True
+    elif choice in no:
+       return False
+    else:
+       print("Please respond with 'yes' or 'no'")
 
 if __name__ == "__main__":
 
@@ -107,6 +134,8 @@ if __name__ == "__main__":
     dark = get_dark("darks") # fits data
     flat = get_flat("flats")
     image_names = get_image_names("obsdata")
+
+    #
 
     # make directory where corrected images will go
     if not os.path.exists("corrected_obsdata"):
