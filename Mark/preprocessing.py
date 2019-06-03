@@ -26,10 +26,12 @@ class Preprocessor(object):
 	def preprocess(self):
 
 
+		# create dictionary of file names where the key is a .lbl and the value is a .fit
 		obsdata = self.create_data_dictionary(self.data_path)
 		darks = self.create_data_dictionary(self.darks_path)
 		flats = self.create_data_dictionary(self.flats_path)
 
+		# List to populate which allow for the comparison of exposure times for darks and flats
 		dark_exposures = list()
 		flat_exposures = list()
 
@@ -55,6 +57,7 @@ class Preprocessor(object):
 			corrected_flats.append(self.flat_corrector(dark,flat))
 
 
+		# For each image correct the image itself and then divide by the corrected flat
 		preprocessed_images = list()
 		for image in obsdata.values():
 			preprocessed_images.append(self.image_corrector(image, dark, corrected_flats[0]))
@@ -62,9 +65,18 @@ class Preprocessor(object):
 
 		return preprocessed_images
 
-	
+
 
 	def image_corrector(self, image, dark, corrected_flat):
+
+
+		""" 
+			Subtracts the dark from the original image, producing a corrected image. 
+			This corrected image is then element-wise divided by the corrected flat.
+
+			returns: final corrected image 
+		"""
+
 		image_object = CCDData(getdata(self.data_path + '/' + image), unit='adu')
 		dark_object = CCDData(getdata(self.darks_path + '/' + dark), unit='adu')
 
@@ -76,6 +88,14 @@ class Preprocessor(object):
 
 
 	def flat_corrector(self, dark, flat):
+
+
+		""" 
+			Subtracts the dark from the flat producing the corrected flat.
+
+			returns: corrected flat
+		"""
+
 		flat_object = CCDData(getdata(self.flats_path + '/' + flat), unit='adu')
 		dark_object = CCDData(getdata(self.darks_path + '/' + dark), unit='adu')
 
