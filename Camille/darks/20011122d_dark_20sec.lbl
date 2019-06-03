@@ -1,0 +1,61 @@
+PDS_VERSION_ID                     = PDS3
+
+RECORD_TYPE                        = "FIXED_LENGTH"
+RECORD_BYTES                       = 2880
+FILE_RECORDS                       = 23120
+
+^HEADER                            = "20011122e_dark_20sec.fit"
+^IMAGE                             = ("20011122e_dark_20sec.fit", 5)
+
+DATA_SET_ID                        = "EAR-A-I1063-3-NEAT-V1.0"
+PRODUCT_NAME                       = "NEAT TRI-CAM DARK IMAGE"
+PRODUCT_ID                         =
+        "P20011122_DARKS_20011122E_DARK_20SEC"
+INSTRUMENT_HOST_ID                 = "OBS347T2"
+INSTRUMENT_HOST_NAME               = "PALOMAR OBSERVATORY 1.24/1.83-M OSCHIN
+        SCHMIDT PHOTOGRAPHIC EQUAT. TELESCOPE"
+INSTRUMENT_ID                      = "I1063"
+INSTRUMENT_NAME                    = "NEAT PALOMAR TRI-CAMERA"
+TARGET_NAME                        = "DARK"
+TARGET_TYPE                        = "CALIBRATION"
+START_TIME                         = 2001-11-22T03:25:38
+STOP_TIME                          = 2001-11-22T03:25:58
+PRODUCT_CREATION_TIME              = 2014-05-08T16:59:01
+REFERENCE_KEY_ID                   = {"BALTAY&RABINOWIT2007", "LANDOLT1992",
+        "PRAVDOETAL1999"}
+FILTER_NAME                        = "NONE"
+CENTER_FILTER_WAVELENGTH           = 702 <NANOMETER>
+RIGHT_ASCENSION                    = 0.0 <DEGREE>
+DECLINATION                        = 0.0 <DEGREE>
+COORDINATE_SYSTEM_ID               = "J2000"
+AIRMASS                            = 1.30767
+EXPOSURE_DURATION                  = 20.0 <SECOND>
+
+OBJECT                             = HEADER
+ BYTES                             = 11520
+ HEADER_TYPE                       = "FITS"
+ INTERCHANGE_FORMAT                = "BINARY"
+ RECORDS                           = 4
+ DESCRIPTION                       = "FITS Standard NOST 100-2.0"
+END_OBJECT                         = HEADER
+
+
+OBJECT                             = IMAGE
+  LINES                            = 4080
+  LINE_SAMPLES                     = 4080
+  SAMPLE_BITS                      = 32
+  SAMPLE_TYPE                      = "IEEE_REAL"
+  OFFSET                           = 0.0
+  SCALING_FACTOR                   = 1.0
+  DERIVED_MINIMUM                  = -31471.898438
+  DERIVED_MAXIMUM                  = 30781.695312
+  AXIS_ORDER_TYPE                  = "FIRST_INDEX_FASTEST"
+  LINE_DISPLAY_DIRECTION           = "DOWN"
+  SAMPLE_DISPLAY_DIRECTION         = "RIGHT"
+  UNIT                             = "COUNTS"
+  HORIZONTAL_PIXEL_FOV             = 1.01 <ARCSECOND>
+  VERTICAL_PIXEL_FOV               = 1.01 <ARCSECOND>
+  DESCRIPTION                      = "NEAT Palomar Tri-camera dark image"
+END_OBJECT                         = IMAGE
+
+END

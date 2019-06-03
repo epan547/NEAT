@@ -135,7 +135,6 @@ if __name__ == "__main__":
     flat = get_flat("flats")
     image_names = get_image_names("obsdata")
 
-    #
 
     # make directory where corrected images will go
     if not os.path.exists("corrected_obsdata"):

@@ -1,0 +1,61 @@
+PDS_VERSION_ID                     = PDS3
+
+RECORD_TYPE                        = "FIXED_LENGTH"
+RECORD_BYTES                       = 2880
+FILE_RECORDS                       = 23120
+
+^HEADER                            = "20011122023037a.fit"
+^IMAGE                             = ("20011122023037a.fit", 5)
+
+DATA_SET_ID                        = "EAR-A-I1063-3-NEAT-V1.0"
+PRODUCT_NAME                       = "NEAT TRI-CAM IMAGE"
+PRODUCT_ID                         =
+        "P20011122_OBSDATA_20011122023037A"
+INSTRUMENT_HOST_ID                 = "OBS347T2"
+INSTRUMENT_HOST_NAME               = "PALOMAR OBSERVATORY 1.24/1.83-M OSCHIN
+        SCHMIDT PHOTOGRAPHIC EQUAT. TELESCOPE"
+INSTRUMENT_ID                      = "I1063"
+INSTRUMENT_NAME                    = "NEAT PALOMAR TRI-CAMERA"
+TARGET_NAME                        = "ASTEROID"
+TARGET_TYPE                        = "ASTEROID"
+START_TIME                         = 2001-11-22T02:30:37
+STOP_TIME                          = 2001-11-22T02:30:57
+PRODUCT_CREATION_TIME              = 2014-05-08T16:59:03
+REFERENCE_KEY_ID                   = {"BALTAY&RABINOWIT2007", "LANDOLT1992",
+        "PRAVDOETAL1999"}
+FILTER_NAME                        = "NONE"
+CENTER_FILTER_WAVELENGTH           = 702 <NANOMETER>
+RIGHT_ASCENSION                    = 12.45565 <DEGREE>
+DECLINATION                        = -30.268256 <DEGREE>
+COORDINATE_SYSTEM_ID               = "J2000"
+AIRMASS                            = 2.54937
+EXPOSURE_DURATION                  = 20.0 <SECOND>
+
+OBJECT                             = HEADER
+ BYTES                             = 11520
+ HEADER_TYPE                       = "FITS"
+ INTERCHANGE_FORMAT                = "BINARY"
+ RECORDS                           = 4
+ DESCRIPTION                       = "FITS Standard NOST 100-2.0"
+END_OBJECT                         = HEADER
+
+
+OBJECT                             = IMAGE
+  LINES                            = 24
+  LINE_SAMPLES                     = 4080
+  SAMPLE_BITS                      = 32
+  SAMPLE_TYPE                      = "IEEE_REAL"
+  OFFSET                           = 0.0
+  SCALING_FACTOR                   = 1.0
+  DERIVED_MINIMUM                  = -32717.878906
+  DERIVED_MAXIMUM                  = 32770.996094
+  AXIS_ORDER_TYPE                  = "FIRST_INDEX_FASTEST"
+  LINE_DISPLAY_DIRECTION           = "DOWN"
+  SAMPLE_DISPLAY_DIRECTION         = "RIGHT"
+  UNIT                             = "COUNTS"
+  HORIZONTAL_PIXEL_FOV             = 1.01 <ARCSECOND>
+  VERTICAL_PIXEL_FOV               = 1.01 <ARCSECOND>
+  DESCRIPTION                      = "NEAT Palomar Tri-camera on-sky image"
+END_OBJECT                         = IMAGE
+
+END
