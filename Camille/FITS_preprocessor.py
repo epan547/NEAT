@@ -18,13 +18,18 @@ from datetime import datetime
 from astropy.io import fits
 from astropy.nddata import CCDData
 
+overwrite_ok = 1 # automatically overwrite without asking permission
+
 flats_folder = 'flats'
 darks_folder = 'darks'
 img_data_folder = 'obsdata'
 
-geodss_data_volume = 'geodss/data'
-tricam_data_volume = 'tricam/data'
-tricam2_data_volume = 'tricam2/data'
+geodss_data_volume = 'geodss'
+tricam_data_volume = 'tricam'
+tricam2_data_volume = 'tricam2'
+
+# change this to choose which to process: geodss, tricam, tricam2, etc
+target_volume = geodss_data_volume
 
 processed_volume = 'obsdata_reduction'
 FMT = '%H:%M:%S'
@@ -41,7 +46,7 @@ def all_files(directory):
     """
 
     # flat
-    flat = get_dir_files(directory +"/"+ flats_folder)
+    flat = get_dir_files(directory + "/"+ flats_folder)
     flat_requirements = [("TARGET_NAME", "\"FLAT FIELD\"")]
     for key in flat.keys():
         check_lbl_fields(flat[key]["lbl"], flat_requirements)
@@ -99,13 +104,19 @@ def get_dir_files(directory):
             files[name]["lbl"] = lblparser.lbl_parse((filepath))
             # check_lbl_fields(filename, "obsdata")
 
+    # check for files missing their fit or lbl
+    missing = [name for name in files.keys() if len(files[name]) != 2]
+    for m in missing:
+        print("Missing corresponding fits or lbl for file: " + m)
+        del files[m]
+
     return files # nested dictionary -> files[filename][lbl or data]
 
 def check_lbl_fields(lbl, requirements):
     for r in requirements:
         if lbl[r[0]] != r[1]:
+            print("Error in file: {}".format(lbl["^HEADER"]))
             raise Exception("Invalid value for lbl field {}. Expected {} not {}".format(r[0], r[1], lbl[r[0]]))
-
 
 def make_fits(image_data, filename):
     """
@@ -115,14 +126,20 @@ def make_fits(image_data, filename):
     """
     hdu = fits.PrimaryHDU(image_data)
 
-    if(os.path.isfile(filename)):
-        print("Corrected file: \"{}\" already exists. \nOverwrite? [y/n]".format(filename))
-        if(user_confirm()):
+    if(os.path.isfile(filename)): # file already exists
+        if(overwrite_ok):
             os.remove(filename)
             hdu.writeto(filename)
-            print("File Overwritten: {}".format(filename))
+            # print("File Overwritten: {}".format(filename))
         else:
-            print("Corrected file not overwritten.")
+            print("Corrected file: \"{}\" already exists. \nOverwrite? [y/n]".format(filename))
+            if(user_confirm()):
+                os.remove(filename)
+                hdu.writeto(filename)
+                print("File Overwritten: {}".format(filename))
+            else:
+                # print("Corrected file not overwritten.")
+                pass
     else:
         print("Created file: {}".format(filename))
         hdu.writeto(filename)
@@ -153,23 +170,34 @@ def match_dark_flat(image_lbl, darks, flats):
     return darks[match_dark]["data"], flats[match_flat]["data"]
 
 def process_directory(directory):
-    darks, flats, images = all_files(directory)
-    # make directory where corrected images will go
-    if not os.path.exists(directory + "/" + processed_volume):
-        os.mkdir(directory + "/" +processed_volume)
-    new_path = directory + "/" + processed_volume +"/"
+    directory_path = target_data_volume + "/" + directory
+    darks, flats, images = all_files(directory_path)
+
+    # make directory where corrected directories will go
+    processed_dir_path = target_volume + "/" + processed_volume
+    if not os.path.exists(processed_dir_path):
+        os.mkdir(processed_dir_path)
+        print("directory: {} created".format(processed_dir_path))
+
+    # make sub directory of corrected images
+    sub_dir_path = target_volume + "/" + processed_volume + "/" + directory
+    print(sub_dir_path)
+    if not os.path.exists(sub_dir_path):
+        os.mkdir(sub_dir_path)
+        print("directory:{} created".format(sub_dir_path))
+
+    new_file_path = sub_dir_path + "/"
 
     # process all the images
     for filename in images.keys():
         print("Processing: {}".format(filename))
-        new_filename = new_path + filename + "_reduced.fit"
+        new_filename = new_file_path + filename + "_reduced.fit"
         image_data = images[filename]["data"]
         dark_data, flat_data = match_dark_flat(images[filename]["lbl"], darks, flats)
         processed_image = process_image(image_data, dark_data, flat_data)
         make_fits(processed_image, new_filename)
 
 def user_confirm():
-    return True # TODO: remove when done testing
     yes = {'yes','y', 'ye', ''}
     no = {'no','n'}
     choice = input().lower()
@@ -183,4 +211,17 @@ def user_confirm():
 
 if __name__ == "__main__":
 
-    process_directory("p20011122")
+    target_data_volume = target_volume + "/data"
+
+
+    data_volume = next(os.walk(target_data_volume))
+    for dir in os.listdir(target_data_volume):
+
+        try:
+            print("Processing directory: " + dir)
+            process_directory(dir)
+            print("Done.")
+        except Exception as e:
+            print("Error Processing in Directory: " + dir)
+            print(e)
+            pass
