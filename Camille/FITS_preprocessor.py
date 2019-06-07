@@ -29,7 +29,7 @@ tricam_data_volume = 'tricam'
 tricam2_data_volume = 'tricam2'
 
 # change this to choose which to process: geodss, tricam, tricam2, etc
-target_volume = geodss_data_volume
+target_volume = tricam_data_volume
 
 processed_volume = 'obsdata_reduction'
 FMT = '%H:%M:%S'
@@ -76,6 +76,7 @@ def process_image(image, dark, flat):
     image_minus_dark = image - dark
 
     corrected_image =  image_minus_dark / flat
+    # flats from NEAT are already corrected
 
     return corrected_image
 
@@ -102,7 +103,6 @@ def get_dir_files(directory):
 
         elif ext == ".lbl":
             files[name]["lbl"] = lblparser.lbl_parse((filepath))
-            # check_lbl_fields(filename, "obsdata")
 
     # check for files missing their fit or lbl
     missing = [name for name in files.keys() if len(files[name]) != 2]
@@ -138,7 +138,7 @@ def make_fits(image_data, filename):
                 hdu.writeto(filename)
                 print("File Overwritten: {}".format(filename))
             else:
-                # print("Corrected file not overwritten.")
+                print("Corrected file not overwritten.")
                 pass
     else:
         print("Created file: {}".format(filename))
