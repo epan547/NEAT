@@ -2,6 +2,7 @@
 Written By Siddarth Garimella
 Source Code can be found here: https://github.com/gsidsid/neat
 
+Edits made by Camille Xue
 """
 from bs4 import BeautifulSoup
 import urllib.request as urllib2
@@ -62,8 +63,9 @@ def fetchRecord(record, verbose=False):
     file_idx = 0
     recordData = []
     read_url(record, recordData)
+    # print(record)
     print("Fetching record " + getRecordID(record) + "...")
-    # print("wget -r -nH -nc --cut-dirs=2 --no-parent --reject=\"index.html*\" " + str(record))
+    print("wget -r -nH -nc --cut-dirs=2 --no-parent --reject=\"index.html*\" " + str(record))
     os.system(
         "wget -r -nH -nc --cut-dirs=2 --no-parent --reject=\"index.html*\" " +
         str(record))
@@ -71,9 +73,9 @@ def fetchRecord(record, verbose=False):
         print("Completed fetching record " + getRecordID(record) + "\r")
     else:
         print("Completed fetching record " + getRecordID(record))
-    print("Unpacking...")
-    subprocess.call("sh f.sh", shell=True)
-    print("Done!")
+    # print("Unpacking...")
+    # subprocess.call("sh f.sh", shell=True)
+    # print("Done!")
 
 
 def fetchRecords(data):
@@ -81,9 +83,11 @@ def fetchRecords(data):
         t = threading.Thread(target=fetchRecord, args=(record, False))
         t.start()
 
+
 NEAT_vol_1_data = pullVolumeData(NEAT_vol_1)
-palomar = getRecordsFromVolumeData(NEAT_vol_1_data, 10)
-fetchRecords(palomar)
+for i in range(0, len(NEAT_vol_1_data)):
+    palomar = getRecordsFromVolumeData(NEAT_vol_1_data, i)
+    fetchRecords(palomar)
 
 NEAT_vol_2_data = pullVolumeData(NEAT_vol_2)
 palomar = getRecordsFromVolumeData(NEAT_vol_2_data, 10)
